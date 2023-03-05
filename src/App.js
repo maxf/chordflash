@@ -8,6 +8,7 @@ const Modes = Object.freeze({
   GuessChordName: Symbol("Guess chord")
 });
 
+
 function App() {
   return (
     <div className="App">
@@ -20,14 +21,17 @@ function App() {
 
 
 function Card() {
-  const [ mode, setMode ] = useState(Modes.GuessChordName);
+  const [ mode, setMode ] = useState(Modes.GuessOnPiano);
   const [ showingChordName, setShowingChordName ] = useState(false);
   const [ showingChordPicture, setShowingChordPicture ] = useState(false);
   const [ chord, setChord ] = useState(randomChordName());
-  const [ selected, setSelected ] = useState(modifiers.map(modifier => true));
+  const [ selectedMode, setSelectedMode ] = useState(
+    [ true, true, false, false, false ] // start with only major and minor
+  );
+  const [ includeAccidentals, setIncludeAccidentals ] = useState(true);
 
   function toggleModifier(event, idx) {
-    setSelected(s => s.map((e, i) => i===idx ? !s[i] : s[i] ));
+    setSelectedMode(s => s.map((e, i) => i===idx ? !s[i] : s[i] ));
   }
 
   const toggleChordName = function() {
@@ -38,26 +42,36 @@ function Card() {
     setShowingChordPicture(!showingChordPicture);
   }
 
+  const toggleAccidentals = function() {
+    setIncludeAccidentals(!includeAccidentals);
+  }
+
   const chordPos = chordPosition(chord);
 
   const nextChord = function() {
-    setChord(randomChordName(selected));
-    switch (mode) {
-      case Modes.GuessChordName:
-      setShowingChordName(false);
+    if (!showingChordName || !showingChordPicture) {
+      setShowingChordName(true);
       setShowingChordPicture(true);
-      break;
-      case Modes.GuessOnPiano:
-      setShowingChordName(true);
-      setShowingChordPicture(false);
-      break;
-      default:
-      console.log('Error: unknown mode', mode);
-      setMode(Modes.GuessOnPiano);
-      setShowingChordName(true);
-      setShowingChordPicture(false);
+    } else {
+      setChord(randomChordName(selectedMode));
+      switch (mode) {
+        case Modes.GuessChordName:
+        setShowingChordName(false);
+        setShowingChordPicture(true);
+        break;
+        case Modes.GuessOnPiano:
+        setShowingChordName(true);
+        setShowingChordPicture(false);
+        break;
+        default:
+        console.log('Error: unknown mode', mode);
+        setMode(Modes.GuessOnPiano);
+        setShowingChordName(true);
+        setShowingChordPicture(false);
+      }
     }
-  }
+  };
+
 
   const pianoStyle = function() {
     if (mode === Modes.GuessChordName || showingChordPicture) {
@@ -79,9 +93,9 @@ function Card() {
     switch(mode) {
     case Modes.GuessChordName:
       return (
-        <h1 onClick={toggleChordName}>
-          {showingChordName ? `${chord.note} ${chord.modifier}` : "Guess"}
-        </h1>
+        <h2 onClick={toggleChordName}>
+          {showingChordName ? `${chord.note} ${chord.modifier}` : "Chord name?"}
+        </h2>
       );
     case Modes.GuessOnPiano:
       return (
@@ -146,15 +160,22 @@ function Card() {
               <input
                   type="checkbox"
                   onChange={(event) => toggleModifier(event, idx)}
-                  checked={selected[idx]}/>
+                  checked={selectedMode[idx]}/>
             </li>
           )}
         </ul>
       </div>
-        {pianoPicture()}
-        {chordTitle()}
-        <button onClick={nextChord}>Next</button>
+      <div className="AccidentalsSelector">
+        Include accidentals
+        <input
+            type="checkbox"
+            onChange={toggleAccidentals}
+            checked={includeAccidentals}/>
       </div>
+      {pianoPicture()}
+      {chordTitle()}
+      <button onClick={nextChord}>Next</button>
+    </div>
   );
 }
 

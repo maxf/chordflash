@@ -10,7 +10,7 @@ const notes = [
 
 const modifiers = ["maj", "min", "aug", "dim", "7th"];
 
-const randomChordName = function(modifiersMask) {
+const randomChordName = function(modifiersMask, includeAccidentals) {
 
   // if no mask was passed, set mask to allow all modifiers
   if (!modifiersMask) {
@@ -23,11 +23,15 @@ const randomChordName = function(modifiersMask) {
     if (modifiersMask[index]) allowedModifiers.push(modifier);
   });
 
-  const randomNoteIndex = Math.floor(Math.random() * notes.length);
+  const allowedNotes = (!includeAccidentals) ?
+    [ "C", "D", "E", "F", "G", "A", "B" ] : notes;
+
+
+  const randomNoteIndex = Math.floor(Math.random() * allowedNotes.length);
   const randomModifierIndex = Math.floor(Math.random() * allowedModifiers.length);
 
   return {
-    note: notes[randomNoteIndex],
+    note: allowedNotes[randomNoteIndex],
     modifier: allowedModifiers[randomModifierIndex]
   }
 };
