@@ -177,7 +177,7 @@ function Card() {
       </div>
       {pianoPicture()}
       {chordTitle()}
-      <button onClick={nextChord}>Next</button>
+      <button className="App-buttonNext" onClick={nextChord}>Next</button>
     </div>
   );
 }
