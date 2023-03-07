@@ -78,7 +78,7 @@ function Card() {
   const pianoStyle = function() {
     if (mode === Modes.GuessChordName || showingChordPicture) {
       return {
-        backgroundImage: "url('/chords.png')",
+        backgroundImage: "url('chords.png')",
         backgroundPositionX: chordPos.left,
         backgroundPositionY: chordPos.top,
         backgroundRepeat: "no-repeat"
