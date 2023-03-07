@@ -81,7 +81,8 @@ function Card() {
         backgroundImage: "url('chords.png')",
         backgroundPositionX: chordPos.left,
         backgroundPositionY: chordPos.top,
-        backgroundRepeat: "no-repeat"
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "2675px 4448px"
       }
     } else {
       return {

@@ -1,7 +1,7 @@
-const originX = -390;
-const originY = -776;
-const stepX = -616;
-const stepY = -350;
+const originX = -229;
+const originY = -692;
+const stepX = -470;
+const stepY = -313;
 
 const notes = [
   "C", "C# / Db", "D", "D# / Eb", "E", "F",
