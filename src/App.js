@@ -24,11 +24,13 @@ function Card() {
   const [ mode, setMode ] = useState(Modes.GuessOnPiano);
   const [ showingChordName, setShowingChordName ] = useState(false);
   const [ showingChordPicture, setShowingChordPicture ] = useState(false);
-  const [ chord, setChord ] = useState(randomChordName());
   const [ selectedMode, setSelectedMode ] = useState(
     [ true, true, false, false, false ] // start with only major and minor
   );
   const [ includeAccidentals, setIncludeAccidentals ] = useState(true);
+  const [ chord, setChord ] =
+    useState(randomChordName(selectedMode, includeAccidentals));
+
 
   function toggleModifier(event, idx) {
     setSelectedMode(s => s.map((e, i) => i===idx ? !s[i] : s[i] ));
@@ -53,7 +55,7 @@ function Card() {
       setShowingChordName(true);
       setShowingChordPicture(true);
     } else {
-      setChord(randomChordName(selectedMode));
+      setChord(randomChordName(selectedMode, includeAccidentals));
       switch (mode) {
         case Modes.GuessChordName:
         setShowingChordName(false);
