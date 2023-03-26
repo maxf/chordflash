@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './App.css';
 import { modifiers, chordPosition, randomChordName } from './chords.js';
+import eruda from 'eruda';
 
+eruda.init();
 
 const Modes = Object.freeze({
   GuessOnPiano: Symbol("Guess on piano"),
@@ -22,6 +24,7 @@ function App() {
 
 function Card() {
   const [ mode, setMode ] = useState(Modes.GuessOnPiano);
+  const [ handsfree, setHandsfree ] = useState(false);
   const [ showingChordName, setShowingChordName ] = useState(false);
   const [ showingChordPicture, setShowingChordPicture ] = useState(false);
   const [ selectedMode, setSelectedMode ] = useState(
@@ -32,47 +35,71 @@ function Card() {
     useState(randomChordName(selectedMode, includeAccidentals));
 
 
+
+
   function toggleModifier(event, idx) {
     setSelectedMode(s => s.map((e, i) => i===idx ? !s[i] : s[i] ));
   }
 
   const toggleChordName = function() {
-    setShowingChordName(!showingChordName);
+    setShowingChordName(current => !current);
   }
 
   const toggleChordPicture = function() {
-    setShowingChordPicture(!showingChordPicture);
+    setShowingChordPicture(current => !current);
   }
 
   const toggleAccidentals = function() {
-    setIncludeAccidentals(!includeAccidentals);
+    setIncludeAccidentals(current => !current);
+  }
+
+  const toggleHandsfree = function() {
+    setHandsfree(current => !current);
   }
 
   const chordPos = chordPosition(chord);
 
-  const nextChord = function() {
+  const showAnswer = function() {
+    setShowingChordName(true);
+    setShowingChordPicture(true);
+  }
+
+  const nextStep = function() {
     if (!showingChordName || !showingChordPicture) {
-      setShowingChordName(true);
-      setShowingChordPicture(true);
+      showAnswer();
     } else {
-      setChord(randomChordName(selectedMode, includeAccidentals));
-      switch (mode) {
-        case Modes.GuessChordName:
-        setShowingChordName(false);
-        setShowingChordPicture(true);
-        break;
-        case Modes.GuessOnPiano:
-        setShowingChordName(true);
-        setShowingChordPicture(false);
-        break;
-        default:
-        console.log('Error: unknown mode', mode);
-        setMode(Modes.GuessOnPiano);
-        setShowingChordName(true);
-        setShowingChordPicture(false);
-      }
+      newChord();
     }
-  };
+  }
+
+  const newChord = function() {
+    setChord(randomChordName(selectedMode, includeAccidentals));
+    switch (mode) {
+    case Modes.GuessChordName:
+      setShowingChordName(false);
+      setShowingChordPicture(true);
+      break;
+    case Modes.GuessOnPiano:
+      setShowingChordName(true);
+      setShowingChordPicture(false);
+      break;
+    default:
+      console.log('Error: unknown mode', mode);
+      setMode(Modes.GuessOnPiano);
+      setShowingChordName(true);
+      setShowingChordPicture(false);
+    }
+  }
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (handsfree) {
+        nextStep();
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  });
 
 
   const pianoStyle = function() {
@@ -177,7 +204,14 @@ function Card() {
       </div>
       {pianoPicture()}
       {chordTitle()}
-      <button className="App-buttonNext" onClick={nextChord}>Next</button>
+      <button className="App-buttonNext" onClick={nextStep}>Next</button>
+      <div>
+        Hands-free mode
+        <input
+            type="checkbox"
+            onChange={toggleHandsfree}
+            checked={handsfree} />
+      </div>
     </div>
   );
 }
