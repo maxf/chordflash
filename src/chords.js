@@ -1,4 +1,4 @@
-const originX = -229;
+const originX = -289;
 const originY = -692;
 const stepX = -470;
 const stepY = -313;
