@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './App.css';
 import { modifiers, chordPosition, randomChordName } from './chords.js';
-import eruda from 'eruda';
 
-eruda.init();
 
 const Modes = Object.freeze({
   GuessOnPiano: Symbol("Guess on piano"),
