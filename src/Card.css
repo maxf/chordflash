@@ -1,0 +1,17 @@
+.Card {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.Card .controls {
+  min-width: 300px;
+  background: #ddd;
+  padding: 1em;
+}
+
+
+.Card .main {
+  text-align: center;
+  padding: 1em;
+}
