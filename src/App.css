@@ -14,14 +14,3 @@
 .App-buttonNext {
   font-size: 30px;
 }
-
-ul {
-  list-style-type: none;
-}
-
-li {
-  display: inline;
-  margin-right: 10px;
-  background: white;
-  color: black;
-}

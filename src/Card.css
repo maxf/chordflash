@@ -10,8 +10,34 @@
   padding: 1em;
 }
 
+.Card .controls button {
+  font-size: 20px;
+}
+
+.modifierName {
+  font-size: 30px;
+}
+
+.Card .controls input[type=checkbox] {
+  width: 25px;
+  height: 25px;
+}
 
 .Card .main {
   text-align: center;
   padding: 1em;
+}
+
+.Card .mainInner {
+  padding: 70px 0;
+}
+
+.Card ul {
+  list-style-type: none;
+}
+
+.Card li {
+  margin-right: 10px;
+  background: white;
+  color: black;
 }

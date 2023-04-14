@@ -155,11 +155,13 @@ function Card() {
     <div className="Card">
       <div className="controls">
         <div className="ModeSelector">
+          <h3>Mode: </h3>
           <button
             onClick={() => setMode(Modes.GuessOnPiano)}
             disabled={ mode === Modes.GuessOnPiano }>
             Guess piano keys
           </button>
+          <br/>
           <button
             onClick={() => setMode(Modes.GuessChordName)}
             disabled={ mode === Modes.GuessChordName }>
@@ -167,10 +169,11 @@ function Card() {
           </button>
         </div>
         <div className="ModifierSelector">
+          <h3>Chord type: </h3>
           <ul>
             {modifiers.map((modifier, idx) =>
               <li key={idx}>
-                {modifier}
+                <span className="modifierName">{modifier}</span>
                 <input
                     type="checkbox"
                     onChange={(event) => toggleModifier(event, idx)}
@@ -180,24 +183,29 @@ function Card() {
           </ul>
         </div>
         <div className="AccidentalsSelector">
-          Include accidentals
-          <input
+          <h3>
+            Accidentals:
+            <input
               type="checkbox"
               onChange={toggleAccidentals}
               checked={includeAccidentals}/>
+          </h3>
         </div>
         <div>
-          Hands-free mode
-          <input
-              type="checkbox"
-              onChange={toggleHandsfree}
-              checked={handsfree} />
+          <h3>Hands-free:
+            <input
+                type="checkbox"
+                onChange={toggleHandsfree}
+                checked={handsfree} />
+          </h3>
         </div>
       </div>
       <div className="main">
-        {pianoPicture()}
-        {chordTitle()}
-        <button className="App-buttonNext" onClick={nextStep}>Next</button>
+        <div className="mainInner">
+          {pianoPicture()}
+          {chordTitle()}
+          <button className="App-buttonNext" onClick={nextStep}>Next</button>
+        </div>
       </div>
     </div>
   );
